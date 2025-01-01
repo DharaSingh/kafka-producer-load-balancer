@@ -7,19 +7,24 @@ if kafka lag is not balanced among them, its best use case to use.
 
 ## Example - 
 
-There are 10m tasks to be done every-day, we have a task scheduler which pushes tasks to a kafka topic 
-which has 10 partitions, and we have 10 EC2 instances to process.
+**First part** of diagram with a topic having 4 partitions and 4 consumers in a consumer group.
+Current lag is - 5, 6, 1, 2 
 
-so   
- - 1m tasks per partition -> per EC2 instance per day  
- - 10m tasks for a topic -> 10 EC2 instances per day   
+**Second part** - we want to push next batch of 10 tasks and we use default kafka producer 
+with random partitioning or round-robin, new lag will be as 
+8, 9, 3, 4.   
+By this consumers are not balanced, two of them have heavy load and other two are less tasks to do.
 
-each task will take sometime to do. Overtime we see a pattern that some partitions have unfinished tasks after a day
-meaning some EC2 machines are not able to complete 1m tasks and some of them are able to finish in less than 24h
-it can be because of nature of tasks or other factors.  
+**3rd part** - using GAP 
+consumer 2 already have enough tasks so 0 tasks there 
+consumer 1 - 1 task 
+consumer 3 and 4 - have less so add more tasks there 
 
-Next day - if task-scheduler pushes 1m to each partition, the lag will keep growing for some instances.
 
+![Alt text](./images/gap-load-balancer.png)
+
+
+## 
 
 ## Solution - 
 load balancing each time we publish msg to kafka.
