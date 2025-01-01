@@ -1,4 +1,4 @@
-module kafka-lag-go
+module kafka-producer-load-balancer
 
 go 1.23.4
 
