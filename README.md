@@ -21,7 +21,7 @@ consumer 1 - 1 task
 consumer 3 and 4 - have less so add more tasks there 
 
 
-![Alt text](./images/gap-load-balancer.png)
+![Alt text](./gap-load-balancer.png)
 
 
 ## 
